@@ -1,42 +1,44 @@
-![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg) ![](../../workflows/fpga/badge.svg)
+![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/wokwi_test/badge.svg) ![](../../workflows/fpga/badge.svg)
 
-# Tiny Tapeout Verilog Project Template
+# 7-bit Serial ALU – Tiny Tapeout Project
 
-- [Read the documentation for project](docs/info.md)
+- [Project documentation](docs/info.md)
 
-## What is Tiny Tapeout?
+## 📘 Project Overview
 
-Tiny Tapeout is an educational project that aims to make it easier and cheaper than ever to get your digital and analog designs manufactured on a real chip.
+This project was developed as part of a **Digital Design Bootcamp**, where the main challenge was to design and implement a **7-bit Arithmetic Logic Unit (ALU)** using a serial input interface and parallel output, targeting ASIC implementation with the **SkyWater 130nm PDK** and **TinyTapeout flow**.
 
-To learn more and get started, visit https://tinytapeout.com.
+According to the bootcamp specification :contentReference[oaicite:0]{index=0}, the ALU must:
 
-## Set up your Verilog project
+- Support arithmetic and logic operations:
+  - `000` → Addition  
+  - `001` → AND  
+  - `010` → OR  
+  - `011` → XOR  
+  - `100` → Subtraction  
 
-1. Add your Verilog files to the `src` folder.
-2. Edit the [info.yaml](info.yaml) and update information about your project, paying special attention to the `source_files` and `top_module` properties. If you are upgrading an existing Tiny Tapeout project, check out our [online info.yaml migration tool](https://tinytapeout.github.io/tt-yaml-upgrade-tool/).
-3. Edit [docs/info.md](docs/info.md) and add a description of your project.
-4. Adapt the testbench to your design. See [test/README.md](test/README.md) for more information.
+- Receive input data **serially (LSB first)**  
+- Output the result **in parallel**  
+- Assert a **Done signal** when the operation is complete  
 
-The GitHub action will automatically build the ASIC files using [LibreLane](https://www.zerotoasiccourse.com/terminology/librelane/).
+---
 
-## Enable GitHub actions to build the results page
+## ⚙️ How it works
 
-- [Enabling GitHub Pages](https://tinytapeout.com/faq/#my-github-action-is-failing-on-the-pages-part)
+The ALU operates using a serial input protocol:
 
-## Resources
+1. When `rst_n = 0`, the system resets to its initial state.
+2. When `rst_n = 1`, the ALU begins receiving data.
+3. Data is provided through a single input (`Bit_in`) one bit per clock cycle:
+   - First 7 bits → Operand A (LSB first)
+   - Next 7 bits → Operand B (LSB first)
+4. After receiving 14 bits, the ALU:
+   - Executes the selected operation (`op[2:0]`)
+   - Outputs the result in parallel (`Data_out[6:0]`)
+   - Asserts `Done = 1` for one clock cycle
 
-- [FAQ](https://tinytapeout.com/faq/)
-- [Digital design lessons](https://tinytapeout.com/digital_design/)
-- [Learn how semiconductors work](https://tinytapeout.com/siliwiz/)
-- [Join the community](https://tinytapeout.com/discord)
-- [Build your design locally](https://www.tinytapeout.com/guides/local-hardening/)
+The system then resets internally and is ready for a new operation.
 
-## What next?
-
-- [Submit your design to the next shuttle](https://app.tinytapeout.com/).
-- Edit [this README](README.md) and explain your design, how it works, and how to test it.
-- Share your project on your social network of choice:
-  - LinkedIn [#tinytapeout](https://www.linkedin.com/search/results/content/?keywords=%23tinytapeout) [@TinyTapeout](https://www.linkedin.com/company/100708654/)
-  - Mastodon [#tinytapeout](https://chaos.social/tags/tinytapeout) [@matthewvenn](https://chaos.social/@matthewvenn)
-  - X (formerly Twitter) [#tinytapeout](https://twitter.com/hashtag/tinytapeout) [@tinytapeout](https://twitter.com/tinytapeout)
-  - Bluesky [@tinytapeout.com](https://bsky.app/profile/tinytapeout.com)
+```bash
+cd test
+make -B
