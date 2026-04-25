@@ -36,9 +36,3 @@ The ALU operates using a serial input protocol:
    - Executes the selected operation (`op[2:0]`)
    - Outputs the result in parallel (`Data_out[6:0]`)
    - Asserts `Done = 1` for one clock cycle
-
-The system then resets internally and is ready for a new operation.
-
-```bash
-cd test
-make -B
