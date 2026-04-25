@@ -53,4 +53,9 @@ After completing the operation, the ALU automatically resets its internal state 
 
 ## External hardware
 
-asdf
+No external hardware is required.
+
+The design can be tested using:
+- FPGA or ASIC simulation environment
+- Logic analyzer
+- Manual signal driving via GPIOs
