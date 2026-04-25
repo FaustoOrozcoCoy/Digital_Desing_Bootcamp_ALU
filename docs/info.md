@@ -32,7 +32,24 @@ After completing the operation, the ALU automatically resets its internal state 
 
 ## How to test
 
-asdf
+1. Apply a reset (rst_n = 0) and then release it (rst_n = 1).
+2. Select the desired operation using op[2:0]:
+   - 000: Addition
+   - 001: AND
+   - 010: OR
+   - 011: XOR
+   - 100: Subtraction
+
+3. Provide the input data serially on Bit_in:
+   - First send 7 bits of operand A (LSB first)
+   - Then send 7 bits of operand B (LSB first)
+   - One bit per clock cycle
+
+4. After the 14th clock cycle:
+   - The result will appear on Data_out[6:0]
+   - The Done signal will go high for one clock cycle
+
+5. Repeat the process for additional operations.
 
 ## External hardware
 
