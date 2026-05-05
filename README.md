@@ -8,7 +8,7 @@
 
 This project was developed as part of a **Digital Design Bootcamp**, where the main challenge was to design and implement a **7-bit Arithmetic Logic Unit (ALU)** using a serial input interface and parallel output, targeting ASIC implementation with the **SkyWater 130nm PDK** and **TinyTapeout flow**.
 
-According to the bootcamp specification :contentReference[oaicite:0]{index=0}, the ALU must:
+According to the bootcamp specification, the ALU must:
 
 - Support arithmetic and logic operations:
   - `000` → Addition  
